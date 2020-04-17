@@ -49,7 +49,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
      GeneratePosirtonIncident(anEvent);
 
-     //GenerateBackgroundIncident(anEvent);
+    // GenerateBackgroundIncident(anEvent);
 }	
 
 void PrimaryGeneratorAction::GeneratePosirtonIncident(G4Event* anEvent)
@@ -62,7 +62,7 @@ void PrimaryGeneratorAction::GeneratePosirtonIncident(G4Event* anEvent)
      particleGun->SetParticlePosition(G4ThreeVector(0.0*cm,0.0*cm,0.0*cm));
      particleGun->SetParticleDefinition(particle);
      particleGun->SetParticleMomentumDirection(GenerateIsotropicDirection(thetaMin,thetaMax,phiMin,phiMax));
-     particleGun->SetParticleEnergy(600.0*keV);
+     particleGun->SetParticleEnergy(587.0*keV);
      particleGun->GeneratePrimaryVertex(anEvent);
 
      
@@ -80,18 +80,8 @@ void PrimaryGeneratorAction::GeneratePosirtonIncident(G4Event* anEvent)
 
 G4ThreeVector PrimaryGeneratorAction::GenerateIsotropicDirection(G4double thetaMin,G4double thetaMax,G4double phiMin,G4double phiMax)
 {
-   double k=0;
-   double cosTheta;
   
-   while (k==0)
-   {
-	cosTheta = 2.*G4UniformRand() - 1.;	
-   	if (acos(cosTheta)<thetaMax && acos(cosTheta)>thetaMin)
-   	{
-	     k=1;
-	}
-	
-   }
+   double cosTheta = G4UniformRand()*(cos(thetaMin) - cos(thetaMax)) + cos(thetaMax);
 
    double sinTheta = pow(1-pow(cosTheta, 2), 0.5);
    double phi = G4UniformRand()*(phiMax-phiMin)+phiMin;
@@ -105,7 +95,7 @@ void PrimaryGeneratorAction::GenerateBackgroundIncident(G4Event* anEvent)
      double wym = 1.5*m;
      G4ParticleDefinition* particle = particleTable->FindParticle("gamma");
      particleGun->SetParticleDefinition(particle);
-     particleGun->SetParticleEnergy(1461.0*keV);
+     particleGun->SetParticleEnergy(587.0*keV);
      particleGun->SetParticlePosition(G4ThreeVector((2*G4UniformRand()-1)*wym,(2*G4UniformRand()-1)*wym,(2*G4UniformRand()-1)*wym));
      particleGun->SetParticleMomentumDirection(GenerateIsotropicDirection(0*deg,180*deg,0*deg,360*deg));
      particleGun->GeneratePrimaryVertex(anEvent);

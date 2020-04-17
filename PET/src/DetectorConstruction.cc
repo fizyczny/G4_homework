@@ -46,7 +46,7 @@ DetectorConstruction::~DetectorConstruction()
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
     G4VPhysicalVolume* worldPhys = ConstructWorld();
-    //ConstructHumanFantom();
+    ConstructHumanFantom();
     ConstructCrystal();
     //ConstructNaIDet();
     
