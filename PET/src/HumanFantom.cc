@@ -6,10 +6,16 @@
 #include "globals.hh"
 #include "G4SystemOfUnits.hh" //jednostki
 #include "G4PVPlacement.hh" 
+#include "G4MultiFunctionalDetector.hh"
+#include "G4VPrimitiveScorer.hh"
+#include "G4SDManager.hh"
+#include "G4PSNofSecondary.hh"
+
 
 
 HumanFantom::HumanFantom(double heigh, double radius)
 {
+    fantomLogVol=0;
     ConstructFantom(heigh, radius);
     ConstructSpine(heigh);
 }
@@ -66,6 +72,16 @@ void HumanFantom::ConstructSpine(double heigh)
    new G4PVPlacement(0, pos, spineLogVol, "spinePhys", fantomLogVol, 0, 0);
 }
 
+void HumanFantom::ConstructSDandField()
+{
+   G4MultiFunctionalDetector* detector2 = new G4MultiFunctionalDetector("hfSensitiveDet");
+   G4int depth = 0;
+   G4VPrimitiveScorer* nrOfSecond = new G4PSNofSecondary("nos",depth);
+   detector2->RegisterPrimitive(nrOfSecond);
+   HumanFantom::fantomLogVol->SetSensitiveDetector(detector2);
+   G4SDManager* SDmanager2 = G4SDManager::GetSDMpointer();
+   SDmanager2->AddNewDetector(detector2);
+}
 
 void HumanFantom::Place(G4RotationMatrix *pRot, 
                         G4ThreeVector &tlate, 

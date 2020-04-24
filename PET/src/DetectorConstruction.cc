@@ -18,6 +18,7 @@
 #include "G4SDManager.hh"
 #include "G4PSEnergyDeposit.hh"
 
+
 #include "HumanFantom.hh"
 #include "Crystal.hh"
 
@@ -27,6 +28,8 @@ DetectorConstruction::DetectorConstruction()
     worldLogic = 0L;
     fantomLogVol=0L;
     cylinderLogVol=0L;
+    crystal=0;
+    fantom=0;
     man = G4NistManager::Instance();
 }
 
@@ -49,6 +52,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     ConstructHumanFantom();
     ConstructCrystal();
     //ConstructNaIDet();
+    ConstructSDandField();
     
     return worldPhys;
 }
@@ -78,7 +82,7 @@ void DetectorConstruction::ConstructHumanFantom()
 {   
     G4double radiusMax = 15*cm;
     G4double length = 170*cm;
-    HumanFantom *fantom = new HumanFantom(length, radiusMax);
+    fantom = new HumanFantom(length, radiusMax);
 
     G4ThreeVector pos(0,0,0); 
     //G4RotationMatrix *pRot = new G4RotationMatrix();
@@ -92,7 +96,7 @@ void DetectorConstruction::ConstructCrystal()
     G4double rMin = 40*cm;
     G4double rMax = 55*cm;
     G4double length = 15*cm;
-    Crystal *crystal = new Crystal(rMin, rMax, length);
+    crystal = new Crystal(rMin, rMax, length);
     
     G4ThreeVector pos(0,0,0);
     crystal->Place(0, pos, "crystal", worldLogic, 0);
@@ -102,8 +106,10 @@ void DetectorConstruction::ConstructCrystal()
 
 void DetectorConstruction::ConstructSDandField() 
 {
+    crystal -> ConstructSDandField();
+    fantom -> ConstructSDandField();
 
-
+  
 }
 
 

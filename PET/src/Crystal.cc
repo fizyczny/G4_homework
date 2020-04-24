@@ -9,12 +9,19 @@
 #include "G4Material.hh"
 #include "G4ThreeVector.hh" 
 #include "G4NistManager.hh"
+#include "G4MultiFunctionalDetector.hh"
+#include "G4VPrimitiveScorer.hh"
+#include "G4SDManager.hh"
+#include "G4PSEnergyDeposit.hh"
 
 
 Crystal::Crystal(double rMin, double rMax, double length)
 {
+    NaILogic=0;
     ConstructCylinder(rMin, rMax, length);
     //ConstructNaIDet();
+    
+    
 
     
 }
@@ -24,7 +31,7 @@ void Crystal::ConstructCylinder(double rMin, double rMax, double length)
 {
      G4LogicalVolume* aluLogic = ConstructAluLayer(); 
      G4LogicalVolume* teflonLogic = ConstructTeflonLayer();   
-     G4LogicalVolume* NaILogic = ConstructCrystal(); 
+     NaILogic = ConstructCrystal(); 
      
      G4NistManager* man=G4NistManager::Instance();
      G4Material* ppy = man->FindOrBuildMaterial("G4_POLYPROPYLENE");
@@ -127,6 +134,18 @@ G4LogicalVolume* Crystal::ConstructCrystal()
    naiLogic->SetVisAttributes(naiVis);
    return naiLogic;
 }
+
+void Crystal::ConstructSDandField()
+{
+   G4MultiFunctionalDetector* detector = new G4MultiFunctionalDetector("naISensitiveDet");
+   G4int depth = 2;
+   G4VPrimitiveScorer* energyDepScorer = new G4PSEnergyDeposit("eDep",depth);
+   detector->RegisterPrimitive(energyDepScorer);
+   NaILogic->SetSensitiveDetector(detector);
+   G4SDManager* SDmanager = G4SDManager::GetSDMpointer();
+   SDmanager->AddNewDetector(detector);
+}
+
 void Crystal::Place(G4RotationMatrix *pRot, 
                         G4ThreeVector &tlate, 
                         const G4String &pName, 

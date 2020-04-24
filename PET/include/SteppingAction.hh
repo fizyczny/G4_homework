@@ -16,6 +16,8 @@ class SteppingAction : public G4UserSteppingAction
     virtual ~SteppingAction();
     virtual void UserSteppingAction(const G4Step*);
     static double dep_en; 
+    //static double licznik;
+    static int nrOfSec;
   private:
         void PrintStep(const G4Step* theStep);
     

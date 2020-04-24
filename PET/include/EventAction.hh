@@ -21,6 +21,9 @@ class EventAction : public G4UserEventAction
     
   private:
     std::ofstream output;
+    double licznik;
+    double licz2;
+    
 
 };
 

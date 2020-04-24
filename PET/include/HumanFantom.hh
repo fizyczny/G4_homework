@@ -12,13 +12,17 @@ class HumanFantom
                         const G4String &pName, 
                         G4LogicalVolume *pMotherLogical,  
                         G4int pCopyNo);
+    void ConstructSDandField();
+    
+
     
     private:
     void ConstructFantom(double heigh, double radius);
     void ConstructSpine(double heigh);
     G4Material* MakeWater();
-    
     G4LogicalVolume* fantomLogVol;
+    
+    
 
 };
 

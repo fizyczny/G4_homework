@@ -12,14 +12,18 @@ class Crystal
                         const G4String &pName, 
                         G4LogicalVolume *pMotherLogical,  
                         G4int pCopyNo);
+    void ConstructSDandField();
     
     private:
     void ConstructCylinder(double rMin, double rMax, double length);
     //void ConstructNaIDet();
+    
+
     G4LogicalVolume* ConstructAluLayer();
     G4LogicalVolume* ConstructTeflonLayer();
     G4LogicalVolume* ConstructCrystal();
     G4LogicalVolume* cylinderLogVol;   
+    G4LogicalVolume* NaILogic;
     
 
 };
