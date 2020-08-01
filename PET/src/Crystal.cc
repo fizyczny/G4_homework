@@ -13,6 +13,7 @@
 #include "G4VPrimitiveScorer.hh"
 #include "G4SDManager.hh"
 #include "G4PSEnergyDeposit.hh"
+#include "NaISD.hh"
 
 
 Crystal::Crystal(double rMin, double rMax, double length)
@@ -137,13 +138,21 @@ G4LogicalVolume* Crystal::ConstructCrystal()
 
 void Crystal::ConstructSDandField()
 {
-   G4MultiFunctionalDetector* detector = new G4MultiFunctionalDetector("naISensitiveDet");
-   G4int depth = 2;
-   G4VPrimitiveScorer* energyDepScorer = new G4PSEnergyDeposit("eDep",depth);
-   detector->RegisterPrimitive(energyDepScorer);
-   NaILogic->SetSensitiveDetector(detector);
-   G4SDManager* SDmanager = G4SDManager::GetSDMpointer();
-   SDmanager->AddNewDetector(detector);
+   /* G4MultiFunctionalDetector* detector =
+    new G4MultiFunctionalDetector("naISensitiveDet");
+    G4int depth = 2;
+    G4VPrimitiveScorer* energyDepScorer = new G4PSEnergyDeposit("eDep",depth);
+    detector->RegisterPrimitive(energyDepScorer);
+    NaILogic->SetSensitiveDetector(detector);
+    G4SDManager* SDmanager = G4SDManager::GetSDMpointer();
+    SDmanager->AddNewDetector(detector);*/
+    
+
+    NaISD* naISD = new NaISD("naISD", "eDep", 2);//konstruktor
+
+   G4SDManager* SDman = G4SDManager::GetSDMpointer();
+    SDman->AddNewDetector(naISD);//rejestracja w G4SDManager
+    NaILogic->SetSensitiveDetector(naISD);
 }
 
 void Crystal::Place(G4RotationMatrix *pRot, 

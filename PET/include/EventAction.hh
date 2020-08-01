@@ -9,6 +9,7 @@
 
 #include "G4UserEventAction.hh"
 #include "G4Event.hh"
+#include "OutputRoot.hh"
 #include <fstream>
 
 class EventAction : public G4UserEventAction
@@ -20,6 +21,7 @@ class EventAction : public G4UserEventAction
     virtual void EndOfEventAction(const G4Event*);
     
   private:
+    OutputRoot* outputFile;
     std::ofstream output;
     double licznik;
     double licz2;

@@ -8,6 +8,7 @@
 #define SteppingACtion_H 1
 
 #include "G4UserSteppingAction.hh"
+#include "OutputRoot.hh"
 
 class SteppingAction : public G4UserSteppingAction
 {
@@ -19,7 +20,9 @@ class SteppingAction : public G4UserSteppingAction
     //static double licznik;
     static int nrOfSec;
   private:
-        void PrintStep(const G4Step* theStep);
+     void PrintStep(const G4Step* theStep);
+     OutputRoot* outputFile;
+     std::ofstream output;
     
 };
 
